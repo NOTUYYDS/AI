@@ -1,15 +1,54 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI生成成果展示</title>
+    <title>材料降解分析</title>
 </head>
 <body>
-    <h1>以下是使用生成式AI生成之圖片</h1>
-<img src="NPTU.webp" alt="圖片描述" style="max-width:100%; height:auto;">
+    <h1>材料降解分析</h1>
+    <form id="analyzeForm">
+        <label>溫度 (°C):</label>
+        <input type="number" id="temperature" required><br><br>
+
+        <label>濕度 (%):</label>
+        <input type="number" id="humidity" required><br><br>
+
+        <label>時間 (天):</label>
+        <input type="number" id="time" required><br><br>
+
+        <button type="submit">分析</button>
+    </form>
+
+    <h2>分析結果</h2>
+    <div id="result"></div>
+
+    <script>
+        document.getElementById('analyzeForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            // 獲取用戶輸入數據
+            const temperature = document.getElementById('temperature').value;
+            const humidity = document.getElementById('humidity').value;
+            const time = document.getElementById('time').value;
+
+            // 發送數據到後端
+            const response = await fetch('/analyze', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ temperature, humidity, time })
+            });
+
+            // 顯示分析結果
+            const result = await response.json();
+            document.getElementById('result').innerText = `降解速率: ${result.degradation_rate}`;
+        });
+    </script>
 </body>
 </html>
+
+
 
 
 
