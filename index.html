@@ -3,46 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>添加圖表的示例</title>
+    <title>累積數據圖表</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+        input, button {
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        #result {
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
-    <h1>材料降解分析工具</h1>
-
-    <form id="updateForm">
+    <h1>材料降解數據累積分析</h1>
+    <form id="addDataForm">
         <label for="temperature">溫度 (°C):</label>
-        <input type="number" id="temperature" placeholder="輸入溫度" required><br><br>
+        <input type="number" id="temperature" placeholder="輸入溫度" required>
 
         <label for="humidity">濕度 (%):</label>
-        <input type="number" id="humidity" placeholder="輸入濕度" required><br><br>
+        <input type="number" id="humidity" placeholder="輸入濕度" required>
 
         <label for="time">時間 (天):</label>
-        <input type="number" id="time" placeholder="輸入時間" required><br><br>
+        <input type="number" id="time" placeholder="輸入時間" required>
 
-        <button type="submit">更新圖表</button>
+        <button type="submit">新增數據</button>
     </form>
 
     <canvas id="myChart" width="400" height="200"></canvas>
 
     <script>
+        // 初始化存儲數據的陣列
+        const dataStore = [];
+
+        // 初始化圖表
         const ctx = document.getElementById('myChart').getContext('2d');
         const myChart = new Chart(ctx, {
             type: 'bar',
             data: {
-                labels: ['溫度', '濕度', '時間'],
+                labels: [], // X 軸標籤，顯示每組數據的名稱
                 datasets: [{
-                    label: '降解影響 (%)',
-                    data: [0, 0, 0], // 初始值
-                    backgroundColor: [
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
-                        'rgba(75, 192, 192, 0.2)'
-                    ],
-                    borderColor: [
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(75, 192, 192, 1)'
-                    ],
+                    label: '降解速率 (%)',
+                    data: [], // Y 軸數據
+                    backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
                     borderWidth: 1
                 }]
             },
@@ -56,24 +71,29 @@
             }
         });
 
-        // 表單提交更新圖表數據
-        document.getElementById('updateForm').addEventListener('submit', function (e) {
+        // 表單提交事件，新增數據
+        document.getElementById('addDataForm').addEventListener('submit', function (e) {
             e.preventDefault();
 
-            // 獲取用戶輸入數據
+            // 獲取用戶輸入
             const temperature = parseFloat(document.getElementById('temperature').value);
             const humidity = parseFloat(document.getElementById('humidity').value);
             const time = parseFloat(document.getElementById('time').value);
 
-            // 更新圖表數據
-            myChart.data.datasets[0].data = [
-                temperature * 0.05, // 模擬數據：溫度對降解的影響
-                humidity * 0.02,   // 模擬數據：濕度對降解的影響
-                time * 0.1         // 模擬數據：時間對降解的影響
-            ];
+            // 計算降解速率（根據公式）
+            const degradationRate = (temperature * 0.05) + (humidity * 0.02) + (time * 0.1);
 
-            // 重新渲染圖表
-            myChart.update();
+            // 將數據推入數據存儲
+            const newData = {
+                label: `溫度:${temperature}°C 濕度:${humidity}% 時間:${time}天`,
+                rate: degradationRate.toFixed(2)
+            };
+            dataStore.push(newData);
+
+            // 更新圖表數據
+            myChart.data.labels.push(newData.label); // 新增標籤
+            myChart.data.datasets[0].data.push(newData.rate); // 新增數據
+            myChart.update(); // 重新渲染圖表
         });
     </script>
 </body>
