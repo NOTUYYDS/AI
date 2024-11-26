@@ -4,58 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>材料降解分析</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-        label {
-            display: block;
-            margin: 10px 0 5px;
-        }
-        input, button {
-            padding: 10px;
-            margin-bottom: 20px;
-        }
-        #result {
-            margin-top: 20px;
-            font-weight: bold;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <h1>材料降解分析工具</h1>
     <form id="degradationForm">
         <label for="temperature">溫度 (°C):</label>
         <input type="number" id="temperature" placeholder="輸入溫度" required>
-
         <label for="humidity">濕度 (%):</label>
         <input type="number" id="humidity" placeholder="輸入濕度" required>
-
         <label for="time">時間 (天):</label>
         <input type="number" id="time" placeholder="輸入時間" required>
-
         <button type="submit">分析降解率</button>
     </form>
-
     <div id="result"></div>
-
-    <script>
-        document.getElementById('degradationForm').addEventListener('submit', function (e) {
-            e.preventDefault(); // 防止頁面刷新
-
-            // 獲取用戶輸入值
-            const temperature = parseFloat(document.getElementById('temperature').value);
-            const humidity = parseFloat(document.getElementById('humidity').value);
-            const time = parseFloat(document.getElementById('time').value);
-
-            // 計算降解率
-            const degradationRate = (temperature * 0.05) + (humidity * 0.02) + (time * 0.1);
-
-            // 顯示結果
-            const resultDiv = document.getElementById('result');
-            resultDiv.textContent = `預測的降解率為：${degradationRate.toFixed(2)} %`;
-        });
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
