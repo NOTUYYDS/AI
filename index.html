@@ -27,7 +27,35 @@
     </style>
 </head>
 <body>
-    <h1>材料降解數據累積分析</h1>
+     <h1>化學分子模型展示</h1>
+    <div id="viewer"></div>
+
+    <script>
+        // 初始化 3Dmol.js
+        const viewer = $3Dmol.createViewer("viewer", { backgroundColor: "white" });
+
+        // CML 資料（替換成你的實際 CML 資料）
+        const cmlData = `
+<molecule>
+ <atomArray>
+  <atom id="a1" elementType="O" x3="-2.223727" y3="3.005847" z3="-0.836156"/>
+  <atom id="a2" elementType="O" x3="-0.870480" y3="3.281906" z3="-0.369555"/>
+  <atom id="a3" elementType="H" x3="-2.655844" y3="3.728836" z3="-0.345884"/>
+  <atom id="a4" elementType="C" x3="-0.524770" y3="2.180628" z3="0.465400"/>
+  <atom id="a5" elementType="C" x3="0.762859" y3="2.468505" z3="1.228872"/>
+  <atom id="a6" elementType="C" x3="2.013379" y3="2.359020" z3="0.362608"/>
+  <atom id="a7" elementType="H" x3="-1.472000" y3="2.112479" z3="1.095002"/>
+  <atom id="a8" elementType="H" x3="-0.297616" y3="1.219469" z3="-0.071765"/>
+ </atomArray>
+</molecule>
+        `;
+
+        // 將 CML 資料加載到 3Dmol.js
+        viewer.addModel(cmlData, "cml"); // 加載 CML 格式的數據
+        viewer.setStyle({}, { stick: {} }); // 設定模型樣式（棒狀結構）
+        viewer.zoomTo(); // 自動縮放到適合視圖
+        viewer.render(); // 渲染模型
+    <h2>材料降解數據累積分析</h1>
     <form id="addDataForm">
         <label for="temperature">溫度 (°C):</label>
         <input type="number" id="temperature" placeholder="輸入溫度" required>
